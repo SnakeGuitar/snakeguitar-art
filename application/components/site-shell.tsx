@@ -27,7 +27,7 @@ function Mark() {
 }
 
 export function SiteShell() {
-  const [locale, setLocale] = useState<Locale>("es-MX");
+  const [locale, setLocale] = useState<Locale>("en-US");
   const [theme, setTheme] = useState<Theme>("light");
   const [filter, setFilter] = useState<Filter>("all");
   const [menuOpen, setMenuOpen] = useState(false);
