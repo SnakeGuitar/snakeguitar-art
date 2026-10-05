@@ -42,9 +42,10 @@ export function SiteShell() {
   const [copiedSocial, setCopiedSocial] = useState<string | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [trackIndex, setTrackIndex] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [musicOpen, setMusicOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const autoplayPendingRef = useRef(true);
   const lightboxTimerRef = useRef<number | null>(null);
   const t = dictionaries[locale];
 
@@ -84,9 +85,30 @@ export function SiteShell() {
 
   useEffect(() => {
     if (!audioRef.current || tracks.length === 0) return;
-    audioRef.current.volume = 0.65;
-    audioRef.current.load();
-    if (playing) audioRef.current.play().catch(() => setPlaying(false));
+    const audio = audioRef.current;
+    audio.volume = 0.65;
+    audio.load();
+
+    const startPlayback = () => {
+      audio.play().then(() => {
+        autoplayPendingRef.current = false;
+        setPlaying(true);
+      }).catch(() => setPlaying(false));
+    };
+
+    if (playing || autoplayPendingRef.current) startPlayback();
+
+    const resumeAfterInteraction = () => {
+      if (!autoplayPendingRef.current) return;
+      startPlayback();
+    };
+
+    window.addEventListener("pointerdown", resumeAfterInteraction, { once: true });
+    window.addEventListener("keydown", resumeAfterInteraction, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", resumeAfterInteraction);
+      window.removeEventListener("keydown", resumeAfterInteraction);
+    };
   }, [trackIndex, tracks]);
 
   const groupedArt = useMemo(() => categoryOrder
@@ -127,6 +149,7 @@ export function SiteShell() {
 
   const toggleMusic = async () => {
     if (!audioRef.current || tracks.length === 0) return;
+    autoplayPendingRef.current = false;
     if (playing) audioRef.current.pause();
     else await audioRef.current.play();
   };
@@ -290,7 +313,7 @@ export function SiteShell() {
       <footer><Mark /><p>{t.footer}</p><p>{t.rights}</p><a href="#top" aria-label="Back to top">↑</a></footer>
 
       {tracks.length > 0 && <aside className={`music-player ${musicOpen ? "open" : ""}`} aria-label={t.musicTitle}>
-        <audio ref={audioRef} src={tracks[trackIndex]?.src} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={nextTrack} />
+        <audio ref={audioRef} src={tracks[trackIndex]?.src} autoPlay onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={nextTrack} />
         <button className="music-tab" type="button" onClick={() => setMusicOpen(!musicOpen)} aria-expanded={musicOpen}><span aria-hidden="true">♫</span><span>{t.musicTitle}</span><i>{musicOpen ? "×" : "+"}</i></button>
         {musicOpen && <div className="music-body">
           <div className="track-info"><span className={playing ? "playing" : ""} aria-hidden="true">♪</span><p><strong>{tracks[trackIndex]?.title}</strong><small>{tracks[trackIndex]?.artist || t.musicUnknownArtist} · {trackIndex + 1} / {tracks.length}</small></p></div>
