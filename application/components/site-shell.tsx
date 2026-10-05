@@ -33,6 +33,7 @@ export function SiteShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [lightboxVisible, setLightboxVisible] = useState(false);
   const [base, setBase] = useState<CommissionId>("halfBody");
   const [extras, setExtras] = useState<CommissionId[]>([]);
   const [copied, setCopied] = useState(false);
@@ -44,6 +45,7 @@ export function SiteShell() {
   const [playing, setPlaying] = useState(false);
   const [musicOpen, setMusicOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const lightboxTimerRef = useRef<number | null>(null);
   const t = dictionaries[locale];
 
   useEffect(() => {
@@ -63,13 +65,17 @@ export function SiteShell() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") { setLightbox(null); setMenuOpen(false); setLanguageOpen(false); }
+      if (event.key === "Escape") { closeLightbox(); setMenuOpen(false); setLanguageOpen(false); }
       if (lightbox !== null && event.key === "ArrowRight") setLightbox((lightbox + 1) % artworks.length);
       if (lightbox !== null && event.key === "ArrowLeft") setLightbox((lightbox - 1 + artworks.length) % artworks.length);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [lightbox]);
+
+  useEffect(() => () => {
+    if (lightboxTimerRef.current !== null) window.clearTimeout(lightboxTimerRef.current);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = lightbox === null ? "" : "hidden";
@@ -90,6 +96,18 @@ export function SiteShell() {
       items: artworks.map((art, index) => ({ art, index })).filter(({ art }) => art.category === category),
     })), [filter]);
   const estimate = calculateEstimate(base, extras);
+
+  const openLightbox = (index: number) => {
+    if (lightboxTimerRef.current !== null) window.clearTimeout(lightboxTimerRef.current);
+    setLightbox(index);
+    requestAnimationFrame(() => setLightboxVisible(true));
+  };
+
+  const closeLightbox = () => {
+    setLightboxVisible(false);
+    if (lightboxTimerRef.current !== null) window.clearTimeout(lightboxTimerRef.current);
+    lightboxTimerRef.current = window.setTimeout(() => setLightbox(null), 180);
+  };
 
   const toggleExtra = (id: CommissionId) => setExtras((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
 
@@ -133,7 +151,7 @@ export function SiteShell() {
       <header className="site-header">
         <Mark />
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#work">{t.navWork}</a><a href="#pricing">{t.navPricing}</a><a href="#process">{t.navProcess}</a><a href="#faq">{t.navFaq}</a>
+          <a href="#work">{t.navWork}</a><a href="#social">{t.navSocial}</a><a href="#pricing">{t.navPricing}</a><a href="#process">{t.navProcess}</a><a href="#faq">{t.navFaq}</a>
         </nav>
         <div className="header-tools">
           <div className="language-wrap">
@@ -147,7 +165,7 @@ export function SiteShell() {
           <button className="icon-button menu-button" onClick={() => { setMenuOpen(!menuOpen); setLanguageOpen(false); }} aria-expanded={menuOpen} aria-label={menuOpen ? t.close : t.openMenu}><span /><span /></button>
         </div>
         {menuOpen && <nav className="mobile-nav" aria-label="Mobile navigation">
-          {[{ href: "#work", label: t.navWork }, { href: "#pricing", label: t.navPricing }, { href: "#process", label: t.navProcess }, { href: "#faq", label: t.navFaq }, { href: "#contact", label: t.navStart }].map(({ href, label }) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<Arrow diagonal /></a>)}
+          {[{ href: "#work", label: t.navWork }, { href: "#social", label: t.navSocial }, { href: "#pricing", label: t.navPricing }, { href: "#process", label: t.navProcess }, { href: "#faq", label: t.navFaq }, { href: "#contact", label: t.navStart }].map(({ href, label }) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<Arrow diagonal /></a>)}
         </nav>}
       </header>
 
@@ -185,7 +203,7 @@ export function SiteShell() {
               <div className="art-group-title"><h3 id={`group-${category}`}>{t.filters[category]}</h3><span>{String(items.length).padStart(2, "0")}</span></div>
               <div className="gallery">
                 {items.map(({ art, index }) => <figure className="art-card" key={art.src}>
-                  <button className="art-image-button" style={{ aspectRatio: `${art.width} / ${art.height}` }} onClick={() => setLightbox(index)} aria-label={`${t.artAlt[art.altKey]} — ${index + 1}`}>
+                  <button className="art-image-button" style={{ aspectRatio: `${art.width} / ${art.height}` }} onClick={() => openLightbox(index)} aria-label={`${t.artAlt[art.altKey]} — ${index + 1}`}>
                     <Image src={art.src} alt={t.artAlt[art.altKey]} fill sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
                     <span className="art-open"><Arrow diagonal /></span>
                   </button>
@@ -284,10 +302,10 @@ export function SiteShell() {
         </div>}
       </aside>}
 
-      {lightbox !== null && <div className="lightbox" role="dialog" aria-modal="true" aria-label={t.artAlt[artworks[lightbox].altKey]} onClick={() => setLightbox(null)}>
-        <button className="lightbox-close" onClick={() => setLightbox(null)} aria-label={t.close}>×</button>
+      {lightbox !== null && <div className={`lightbox${lightboxVisible ? " visible" : ""}`} role="dialog" aria-modal="true" aria-label={t.artAlt[artworks[lightbox].altKey]} onClick={closeLightbox}>
+        <button className="lightbox-close" onClick={closeLightbox} aria-label={t.close}>×</button>
         <button className="lightbox-prev" onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + artworks.length) % artworks.length); }} aria-label={t.previous}>←</button>
-        <div className="lightbox-image" onClick={(e) => e.stopPropagation()}><Image src={artworks[lightbox].src} alt={t.artAlt[artworks[lightbox].altKey]} fill sizes="90vw" /></div>
+        <div className="lightbox-image" key={artworks[lightbox].src} onClick={(e) => e.stopPropagation()}><Image src={artworks[lightbox].src} alt={t.artAlt[artworks[lightbox].altKey]} fill sizes="90vw" /></div>
         <button className="lightbox-next" onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % artworks.length); }} aria-label={t.next}>→</button>
         <div className="lightbox-caption"><span>{String(lightbox + 1).padStart(2, "0")} / {String(artworks.length).padStart(2, "0")}</span><strong>{t.artAlt[artworks[lightbox].altKey]}</strong><span>{t.filters[artworks[lightbox].category]}</span></div>
       </div>}

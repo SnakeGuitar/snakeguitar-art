@@ -2,7 +2,7 @@ export const locales = ["en-US", "es-MX", "pt-BR", "ja-JP", "ko-KR"] as const;
 export type Locale = (typeof locales)[number];
 
 const en = {
-  skip: "Skip to content", navWork: "Work", navPricing: "Pricing", navProcess: "Process", navFaq: "FAQ", navStart: "Start a commission",
+  skip: "Skip to content", navWork: "Work", navSocial: "Social", navPricing: "Pricing", navProcess: "Process", navFaq: "FAQ", navStart: "Start a commission",
   openMenu: "Open menu", close: "Close", previous: "Previous artwork", next: "Next artwork", language: "Language",
   eyebrow: "Furry artist · character design · commissions", heroTitleA: "Furry art", heroTitleB: "drawn by hand.",
   heroBody: "I draw furry characters with expressive poses, textured fineliner ink and graphite details. Original art and custom commissions.",
@@ -25,7 +25,7 @@ const en = {
 type Dictionary = typeof en;
 
 const es: Dictionary = {
-  ...en, skip: "Saltar al contenido", navWork: "Trabajo", navPricing: "Precios", navProcess: "Proceso", navFaq: "Preguntas", navStart: "Iniciar comisión", openMenu: "Abrir menú", close: "Cerrar", previous: "Obra anterior", next: "Obra siguiente", language: "Idioma",
+  ...en, skip: "Saltar al contenido", navWork: "Trabajo", navSocial: "Redes", navPricing: "Precios", navProcess: "Proceso", navFaq: "Preguntas", navStart: "Iniciar comisión", openMenu: "Abrir menú", close: "Cerrar", previous: "Obra anterior", next: "Obra siguiente", language: "Idioma",
   eyebrow: "Artista furry · diseño de personajes · comisiones", heroTitleA: "Arte furry", heroTitleB: "dibujado a mano.", heroBody: "Dibujo personajes furry con poses expresivas, líneas de estilógrafo con textura y detalles de grafito. Arte original y comisiones personalizadas.", viewWork: "Ver trabajo", start: "Comisionar una pieza", available: "Comisiones abiertas", slots: "3 lugares · octubre", scroll: "Baja para explorar",
   workEyebrow: "Trabajo selecto / 2024—26", workTitle: "Un archivo de criaturas y emociones.", workBody: "Piezas en estilógrafo con detalles de grafito, experimentos de póster y diseño de personajes. Toca cualquier pieza para verla de cerca.", filters: { all: "Todo", sketch: "Tinta + grafito", poster: "Pósters", color: "Estudios de color" }, artAlt: { portrait: "Retrato de personaje dibujado a mano", halfBody: "Ilustración de personaje de medio cuerpo", fullBody: "Ilustración de personaje de cuerpo completo", poster: "Póster gráfico de personaje", experimental: "Estudio experimental en azul" },
   experimentalNote: "Servicio experimental: sigo desarrollando mi manejo de color. Acordamos alcance, paleta y acabado esperado antes de comenzar.", additionalCharacters: "Los personajes adicionales usan el mismo precio base del tipo de comisión elegido.",
@@ -40,7 +40,7 @@ const es: Dictionary = {
 };
 
 const pt: Dictionary = {
-  ...en, skip: "Pular para o conteúdo", navWork: "Trabalhos", navPricing: "Preços", navProcess: "Processo", navFaq: "Dúvidas", navStart: "Pedir comissão", openMenu: "Abrir menu", close: "Fechar", previous: "Obra anterior", next: "Próxima obra", language: "Idioma",
+  ...en, skip: "Pular para o conteúdo", navWork: "Trabalhos", navSocial: "Redes", navPricing: "Preços", navProcess: "Processo", navFaq: "Dúvidas", navStart: "Pedir comissão", openMenu: "Abrir menu", close: "Fechar", previous: "Obra anterior", next: "Próxima obra", language: "Idioma",
   eyebrow: "Artista furry · design de personagens · comissões", heroTitleA: "Arte furry", heroTitleB: "feita à mão.", heroBody: "Desenho personagens furry com poses expressivas, linhas texturizadas de caneta técnica e detalhes em grafite. Arte original e comissões personalizadas.", viewWork: "Ver trabalhos", start: "Pedir comissão", available: "Comissões abertas", slots: "3 vagas · outubro", scroll: "Role para explorar",
   workEyebrow: "Trabalhos selecionados / 2024—26", workTitle: "Um arquivo de criaturas e sentimentos.", workBody: "Peças em caneta técnica com detalhes em grafite, experimentos de pôster e personagens. Toque em uma peça para ver de perto.", filters: { all: "Todos", sketch: "Tinta + grafite", poster: "Pôsteres", color: "Estudos de cor" }, artAlt: { portrait: "Retrato de personagem desenhado à mão", halfBody: "Ilustração de personagem de meio corpo", fullBody: "Ilustração de personagem de corpo inteiro", poster: "Pôster gráfico de personagem", experimental: "Estudo experimental em azul" },
   experimentalNote: "Serviço experimental: ainda estou desenvolvendo meu processo de cor. Escopo, paleta e acabamento esperado são combinados antes de começar.", additionalCharacters: "Personagens adicionais usam o mesmo preço-base do tipo de comissão escolhido.",
@@ -55,7 +55,7 @@ const pt: Dictionary = {
 };
 
 const ja: Dictionary = {
-  ...en, skip: "本文へ移動", navWork: "作品", navPricing: "料金", navProcess: "流れ", navFaq: "FAQ", navStart: "依頼する", openMenu: "メニューを開く", close: "閉じる", previous: "前の作品", next: "次の作品", language: "言語",
+  ...en, skip: "本文へ移動", navWork: "作品", navSocial: "SNS", navPricing: "料金", navProcess: "流れ", navFaq: "FAQ", navStart: "依頼する", openMenu: "メニューを開く", close: "閉じる", previous: "前の作品", next: "次の作品", language: "言語",
   eyebrow: "ファーリーアーティスト · キャラクターデザイン · コミッション", heroTitleA: "手描きの", heroTitleB: "ファーリーアート。", heroBody: "表情豊かなポーズ、質感のあるミリペンの線と鉛筆のディテールでファーリーキャラクターを描きます。オリジナル作品とコミッションを受付中です。", viewWork: "作品を見る", start: "コミッションを依頼", available: "受付中", slots: "10月・残り3枠", scroll: "スクロールして見る",
   workEyebrow: "作品セレクション / 2024—26", workTitle: "生き物と感情のアーカイブ。", workBody: "ミリペンを中心に鉛筆のディテールを加えた作品、ポスター実験、キャラクターワーク。作品をタップすると拡大できます。", filters: { all: "すべて", sketch: "インク＋鉛筆", poster: "ポスター", color: "カラー習作" }, artAlt: { portrait: "手描きのキャラクター肖像", halfBody: "キャラクターの半身イラスト", fullBody: "キャラクターの全身イラスト", poster: "キャラクターのグラフィックポスター", experimental: "青色の実験的カラー習作" },
   experimentalNote: "実験的サービス：現在カラー制作を学んでいます。範囲、配色、仕上がりは制作前に相談します。", additionalCharacters: "追加キャラクターには、選択したコミッション種類と同じ基本料金がかかります。",
@@ -70,7 +70,7 @@ const ja: Dictionary = {
 };
 
 const ko: Dictionary = {
-  ...en, skip: "본문으로 이동", navWork: "작품", navPricing: "가격", navProcess: "과정", navFaq: "FAQ", navStart: "커미션 신청", openMenu: "메뉴 열기", close: "닫기", previous: "이전 작품", next: "다음 작품", language: "언어",
+  ...en, skip: "본문으로 이동", navWork: "작품", navSocial: "소셜", navPricing: "가격", navProcess: "과정", navFaq: "FAQ", navStart: "커미션 신청", openMenu: "메뉴 열기", close: "닫기", previous: "이전 작품", next: "다음 작품", language: "언어",
   eyebrow: "퍼리 아티스트 · 캐릭터 디자인 · 커미션", heroTitleA: "손으로 그린", heroTitleB: "퍼리 아트.", heroBody: "표현력 있는 포즈, 질감 있는 파인라이너 잉크 선과 연필 디테일로 퍼리 캐릭터를 그립니다. 오리지널 작품과 맞춤 커미션을 제공합니다.", viewWork: "작품 보기", start: "커미션 신청", available: "커미션 오픈", slots: "10월 · 3자리", scroll: "스크롤해서 둘러보기",
   workEyebrow: "선정 작품 / 2024—26", workTitle: "생명체와 감정의 아카이브.", workBody: "파인라이너 잉크에 연필 디테일을 더한 작품, 포스터 실험, 캐릭터 작업. 작품을 누르면 크게 볼 수 있어요.", filters: { all: "전체", sketch: "잉크 + 연필", poster: "포스터", color: "컬러 습작" }, artAlt: { portrait: "손으로 그린 캐릭터 초상화", halfBody: "반신 캐릭터 일러스트", fullBody: "전신 캐릭터 일러스트", poster: "캐릭터 그래픽 포스터", experimental: "파란색 실험 컬러 습작" },
   experimentalNote: "실험 서비스: 현재 컬러 작업 방식을 발전시키고 있습니다. 범위, 팔레트와 예상 마감은 시작 전에 협의합니다.", additionalCharacters: "추가 캐릭터에는 선택한 커미션 종류와 동일한 기본 가격이 적용됩니다.",
