@@ -161,7 +161,21 @@ export function SiteShell() {
             <span className="art-note note-a" aria-hidden="true">original<br />character</span>
             <span className="art-note note-b" aria-hidden="true">#01</span>
           </div>
-          <a className="scroll-cue" href="#work"><span>↓</span>{t.scroll}</a>
+          <a className="scroll-cue" href="#social"><span>↓</span>{t.scroll}</a>
+        </section>
+
+        <section id="social" className="social-section section-pad">
+          <div className="section-intro">
+            <div><p className="eyebrow"><span />{t.socialEyebrow}</p><h2>{t.socialTitle}</h2></div>
+            <p>{t.socialBody}</p>
+          </div>
+          <div className="social-grid">
+            {socialLinks.map((social) => social.href ? <a className="social-card" href={social.href} target="_blank" rel="noreferrer" key={social.id}>
+              <span className="social-icon">{social.icon}</span><div><small>{social.label}</small><strong>{social.handle}</strong></div><span className="social-action">{t.socialVisit} <Arrow diagonal /></span>
+            </a> : <button className="social-card" type="button" key={social.id} onClick={() => copySocial(social.id, social.handle)}>
+              <span className="social-icon">{social.icon}</span><div><small>{social.label}</small><strong>{social.handle}</strong></div><span className="social-action">{copiedSocial === social.id ? t.socialCopied : t.socialCopy} <Arrow diagonal /></span>
+            </button>)}
+          </div>
         </section>
 
         <section id="work" className="work-section section-pad">
@@ -234,20 +248,6 @@ export function SiteShell() {
         <section id="faq" className="faq-section section-pad">
           <div className="faq-title"><p className="eyebrow"><span />{t.faqEyebrow}</p><h2>{t.faqTitle}</h2><span className="faq-sketch" aria-hidden="true">?</span></div>
           <div className="accordions">{t.faqs.map((faq, index) => <details key={faq.q} open={index === 0}><summary><span>0{index + 1}</span>{faq.q}<i>+</i></summary><p>{faq.a}</p></details>)}</div>
-        </section>
-
-        <section id="social" className="social-section section-pad">
-          <div className="section-intro">
-            <div><p className="eyebrow"><span />{t.socialEyebrow}</p><h2>{t.socialTitle}</h2></div>
-            <p>{t.socialBody}</p>
-          </div>
-          <div className="social-grid">
-            {socialLinks.map((social) => social.href ? <a className="social-card" href={social.href} target="_blank" rel="noreferrer" key={social.id}>
-              <span className="social-icon">{social.icon}</span><div><small>{social.label}</small><strong>{social.handle}</strong></div><span className="social-action">{t.socialVisit} <Arrow diagonal /></span>
-            </a> : <button className="social-card" type="button" key={social.id} onClick={() => copySocial(social.id, social.handle)}>
-              <span className="social-icon">{social.icon}</span><div><small>{social.label}</small><strong>{social.handle}</strong></div><span className="social-action">{copiedSocial === social.id ? t.socialCopied : t.socialCopy} <Arrow diagonal /></span>
-            </button>)}
-          </div>
         </section>
 
         <section id="contact" className="contact-section section-pad">
