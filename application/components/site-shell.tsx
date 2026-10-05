@@ -7,7 +7,7 @@ import { dictionaries, localeLabels, locales, type Locale } from "@/lib/i18n";
 
 type Filter = "all" | "sketch" | "poster" | "color";
 type Theme = "light" | "dark";
-type Track = { title: string; src: string };
+type Track = { title: string; artist?: string; src: string };
 
 const primaryTypes: CommissionId[] = ["headshot", "halfBody", "fullBody", "experimental", "character"];
 const addOnTypes: CommissionId[] = ["poster"];
@@ -72,6 +72,11 @@ export function SiteShell() {
   }, [lightbox]);
 
   useEffect(() => {
+    document.body.style.overflow = lightbox === null ? "" : "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [lightbox]);
+
+  useEffect(() => {
     if (!audioRef.current || tracks.length === 0) return;
     audioRef.current.volume = 0.65;
     audioRef.current.load();
@@ -113,6 +118,15 @@ export function SiteShell() {
     setTrackIndex((current) => (current + 1) % tracks.length);
   };
 
+  const renderPriceRow = (item: (typeof commissionTypes)[number]) => {
+    const index = commissionTypes.findIndex((type) => type.id === item.id);
+    return <article className={`price-row${item.id === "character" ? " featured" : ""}${item.id === "experimental" ? " experimental" : ""}`} key={item.id}>
+      <span className="price-num">{String(index + 1).padStart(2, "0")}</span>
+      <div><h3>{t.types[item.id]}</h3>{item.modifier && <small>{t.addOn}</small>}{item.id === "experimental" && <span className="price-note">{t.experimentalNote}</span>}</div>
+      <p>{item.startingAt && <small>{t.from}</small>}<strong>${item.price}</strong><small>{t.usd}</small></p>
+    </article>;
+  };
+
   return (
     <div id="top" className="site-shell">
       <a className="skip-link" href="#content">{t.skip}</a>
@@ -139,43 +153,23 @@ export function SiteShell() {
 
       <main id="content">
         <section className="hero section-pad">
-          <div className="hero-blob blob-one" aria-hidden="true" />
-          <div className="hero-blob blob-two" aria-hidden="true" />
-          <div className="hero-blob blob-three" aria-hidden="true" />
           <div className="hero-copy">
             <p className="eyebrow"><span />{t.eyebrow}</p>
             <h1>{t.heroTitleA}<br /><em>{t.heroTitleB}</em></h1>
             <p className="hero-body">{t.heroBody}</p>
             <div className="hero-actions">
-              <a className="button primary" href="#work">{t.viewWork}<Arrow /></a>
-              <a className="text-link" href="#contact">{t.start}<Arrow diagonal /></a>
+              <a className="button primary" href="#contact">{t.start}<Arrow diagonal /></a>
+              <a className="button secondary" href="#work">{t.viewWork}<Arrow /></a>
             </div>
             <div className="availability"><span className="pulse" /><strong>{t.available}</strong><span className="slash">/</span><span>{t.slots}</span></div>
           </div>
-          <div className="hero-art" aria-label={t.artAlt.poster}>
-            <div className="scribble scribble-one" aria-hidden="true">✦</div>
-            <div className="image-frame image-frame-back" />
+          <figure className="hero-art">
             <div className="image-frame">
-              <Image src="/art/full-poster-1.webp" alt={t.artAlt.poster} fill priority sizes="(max-width: 800px) 85vw, 42vw" />
+              <Image src="/art/full-poster-1.webp" alt={t.artAlt.poster} fill priority unoptimized sizes="(max-width: 800px) 85vw, 42vw" />
             </div>
-            <span className="art-note note-a" aria-hidden="true">original<br />character</span>
-            <span className="art-note note-b" aria-hidden="true">#01</span>
-          </div>
-          <a className="scroll-cue" href="#social"><span>↓</span>{t.scroll}</a>
-        </section>
-
-        <section id="social" className="social-section section-pad">
-          <div className="section-intro">
-            <div><p className="eyebrow"><span />{t.socialEyebrow}</p><h2>{t.socialTitle}</h2></div>
-            <p>{t.socialBody}</p>
-          </div>
-          <div className="social-grid">
-            {socialLinks.map((social) => social.href ? <a className="social-card" href={social.href} target="_blank" rel="noreferrer" key={social.id}>
-              <span className="social-icon">{social.icon}</span><div><small>{social.label}</small><strong>{social.handle}</strong></div><span className="social-action">{t.socialVisit} <Arrow diagonal /></span>
-            </a> : <button className="social-card" type="button" key={social.id} onClick={() => copySocial(social.id, social.handle)}>
-              <span className="social-icon">{social.icon}</span><div><small>{social.label}</small><strong>{social.handle}</strong></div><span className="social-action">{copiedSocial === social.id ? t.socialCopied : t.socialCopy} <Arrow diagonal /></span>
-            </button>)}
-          </div>
+            <figcaption className="hero-caption"><span>01 / {String(artworks.length).padStart(2, "0")}</span><strong>{t.filters.poster}</strong><span>{t.artAlt.poster}</span></figcaption>
+          </figure>
+          <a className="scroll-cue" href="#work"><span>↓</span>{t.scroll}</a>
         </section>
 
         <section id="work" className="work-section section-pad">
@@ -190,12 +184,26 @@ export function SiteShell() {
             {groupedArt.map(({ category, items }) => <section className="art-group" key={category} aria-labelledby={`group-${category}`}>
               <div className="art-group-title"><h3 id={`group-${category}`}>{t.filters[category]}</h3><span>{String(items.length).padStart(2, "0")}</span></div>
               <div className="gallery">
-                {items.map(({ art, index }) => <button className="art-card" style={{ aspectRatio: `${art.width} / ${art.height}` }} key={art.src} onClick={() => setLightbox(index)} aria-label={`${t.artAlt[art.altKey]} — ${index + 1}`}>
-                  <Image src={art.src} alt={t.artAlt[art.altKey]} fill sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
-                  <span className="art-index">{String(index + 1).padStart(2, "0")}</span><span className="art-open"><Arrow diagonal /></span>
-                </button>)}
+                {items.map(({ art, index }) => <figure className="art-card" key={art.src}>
+                  <button className="art-image-button" style={{ aspectRatio: `${art.width} / ${art.height}` }} onClick={() => setLightbox(index)} aria-label={`${t.artAlt[art.altKey]} — ${index + 1}`}>
+                    <Image src={art.src} alt={t.artAlt[art.altKey]} fill sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+                    <span className="art-open"><Arrow diagonal /></span>
+                  </button>
+                  <figcaption><span>{String(index + 1).padStart(2, "0")}</span><strong>{t.artAlt[art.altKey]}</strong><span>{t.filters[art.category]}</span></figcaption>
+                </figure>)}
               </div>
             </section>)}
+          </div>
+        </section>
+
+        <section id="social" className="social-section section-pad" aria-labelledby="social-title">
+          <div className="social-heading"><p className="eyebrow"><span />{t.socialEyebrow}</p><h2 id="social-title">{t.socialTitle}</h2><p>{t.socialBody}</p></div>
+          <div className="social-grid">
+            {socialLinks.map((social) => social.href ? <a className="social-card" href={social.href} target="_blank" rel="noreferrer" key={social.id}>
+              <span className="social-icon">{social.icon}</span><span><small>{social.label}</small><strong>{social.handle}</strong></span><span className="social-action">{t.socialVisit} <Arrow diagonal /></span>
+            </a> : <button className="social-card" type="button" key={social.id} onClick={() => copySocial(social.id, social.handle)}>
+              <span className="social-icon">{social.icon}</span><span><small>{social.label}</small><strong>{social.handle}</strong></span><span className="social-action">{copiedSocial === social.id ? t.socialCopied : t.socialCopy} <Arrow diagonal /></span>
+            </button>)}
           </div>
         </section>
 
@@ -206,11 +214,10 @@ export function SiteShell() {
           </div>
           <div className="price-layout">
             <div className="price-list">
-              {commissionTypes.map((item, index) => <article className={`price-row${item.id === "character" ? " featured" : ""}${item.id === "experimental" ? " experimental" : ""}`} key={item.id}>
-                <span className="price-num">0{index + 1}</span>
-                <div><h3>{t.types[item.id]}</h3>{item.modifier && <small>{t.addOn}</small>}{item.id === "halfBody" && <small className="popular">{t.popular}</small>}{item.id === "experimental" && <span className="price-note">{t.experimentalNote}</span>}</div>
-                <p>{item.startingAt && <small>{t.from}</small>} ${item.price}</p>
-              </article>)}
+              <div className="price-group-label"><span>{t.base}</span><span>{t.usd}</span></div>
+              {commissionTypes.filter((item) => !item.modifier).map(renderPriceRow)}
+              <div className="price-group-label"><span>{t.extras}</span><span>{t.usd}</span></div>
+              {commissionTypes.filter((item) => item.modifier).map(renderPriceRow)}
               <div className="included-box"><div><strong>{t.included}</strong><p>{t.characterBody}</p><span>{t.lore} <b>{t.lorePrice}</b></span><p>{t.additionalCharacters}</p></div><div><ul>{t.bullets.map((item) => <li key={item}>{item}</li>)}</ul><p>{t.characterComplexity}</p></div></div>
             </div>
             <aside className="estimator">
@@ -259,29 +266,30 @@ export function SiteShell() {
             <button className="button invert full-field" type="submit">{copied ? t.copied : t.copy}<Arrow /></button>
           </form>
         </section>
+
       </main>
 
       <footer><Mark /><p>{t.footer}</p><p>{t.rights}</p><a href="#top" aria-label="Back to top">↑</a></footer>
 
-      <aside className={`music-player ${musicOpen ? "open" : ""}`} aria-label={t.musicTitle}>
+      {tracks.length > 0 && <aside className={`music-player ${musicOpen ? "open" : ""}`} aria-label={t.musicTitle}>
         <audio ref={audioRef} src={tracks[trackIndex]?.src} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={nextTrack} />
         <button className="music-tab" type="button" onClick={() => setMusicOpen(!musicOpen)} aria-expanded={musicOpen}><span aria-hidden="true">♫</span><span>{t.musicTitle}</span><i>{musicOpen ? "×" : "+"}</i></button>
         {musicOpen && <div className="music-body">
-          <div className="track-info"><span className={playing ? "playing" : ""} aria-hidden="true">♪</span><p>{tracks[trackIndex]?.title || t.musicEmpty}<small>{tracks.length > 0 ? `${trackIndex + 1} / ${tracks.length}` : "—"}</small></p></div>
+          <div className="track-info"><span className={playing ? "playing" : ""} aria-hidden="true">♪</span><p><strong>{tracks[trackIndex]?.title}</strong><small>{tracks[trackIndex]?.artist || t.musicUnknownArtist} · {trackIndex + 1} / {tracks.length}</small></p></div>
           <div className="music-controls">
             <button type="button" onClick={toggleMusic} disabled={tracks.length === 0} aria-label={playing ? t.musicPause : t.musicPlay}>{playing ? "Ⅱ" : "▶"}</button>
             <button type="button" onClick={nextTrack} disabled={tracks.length < 2} aria-label={t.musicNext}>→</button>
             <label aria-label={t.musicVolume}><span>◖</span><input type="range" min="0" max="1" step="0.05" defaultValue="0.65" onChange={(event) => { if (audioRef.current) audioRef.current.volume = Number(event.target.value); }} /></label>
           </div>
         </div>}
-      </aside>
+      </aside>}
 
       {lightbox !== null && <div className="lightbox" role="dialog" aria-modal="true" aria-label={t.artAlt[artworks[lightbox].altKey]} onClick={() => setLightbox(null)}>
         <button className="lightbox-close" onClick={() => setLightbox(null)} aria-label={t.close}>×</button>
-        <button className="lightbox-prev" onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + artworks.length) % artworks.length); }} aria-label="Previous">←</button>
+        <button className="lightbox-prev" onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + artworks.length) % artworks.length); }} aria-label={t.previous}>←</button>
         <div className="lightbox-image" onClick={(e) => e.stopPropagation()}><Image src={artworks[lightbox].src} alt={t.artAlt[artworks[lightbox].altKey]} fill sizes="90vw" /></div>
-        <button className="lightbox-next" onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % artworks.length); }} aria-label="Next">→</button>
-        <span className="lightbox-count">{String(lightbox + 1).padStart(2, "0")} / {String(artworks.length).padStart(2, "0")}</span>
+        <button className="lightbox-next" onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % artworks.length); }} aria-label={t.next}>→</button>
+        <div className="lightbox-caption"><span>{String(lightbox + 1).padStart(2, "0")} / {String(artworks.length).padStart(2, "0")}</span><strong>{t.artAlt[artworks[lightbox].altKey]}</strong><span>{t.filters[artworks[lightbox].category]}</span></div>
       </div>}
     </div>
   );

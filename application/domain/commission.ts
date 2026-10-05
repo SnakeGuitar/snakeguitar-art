@@ -8,8 +8,8 @@ type CommissionType = {
 };
 
 export const commissionTypes: readonly CommissionType[] = [
-  { id: "headshot", price: 15 },
-  { id: "halfBody", price: 25 },
+  { id: "headshot", price: 20 },
+  { id: "halfBody", price: 30 },
   { id: "fullBody", price: 40 },
   { id: "poster", price: 15, modifier: true },
   { id: "experimental", price: 5 },
@@ -24,7 +24,7 @@ export const socialLinks = [
 
 export type Artwork = {
   src: string;
-  altKey: "portrait" | "character" | "poster" | "experimental";
+  altKey: "portrait" | "halfBody" | "fullBody" | "poster" | "experimental";
   category: "sketch" | "poster" | "color";
   width: number;
   height: number;
@@ -32,20 +32,22 @@ export type Artwork = {
 
 export const artworks: Artwork[] = [
   { src: "/art/full-poster-1.webp", altKey: "poster", category: "poster", width: 1728, height: 2304 },
-  { src: "/art/half-1.webp", altKey: "character", category: "sketch", width: 1602, height: 2400 },
+  { src: "/art/half-1.webp", altKey: "halfBody", category: "sketch", width: 1602, height: 2400 },
   { src: "/art/experimental-color-1.webp", altKey: "experimental", category: "color", width: 1598, height: 2400 },
-  { src: "/art/full-1.webp", altKey: "character", category: "sketch", width: 1349, height: 2400 },
-  { src: "/art/full-3.webp", altKey: "character", category: "sketch", width: 1153, height: 2400 },
+  { src: "/art/full-1.webp", altKey: "fullBody", category: "sketch", width: 1349, height: 2400 },
+  { src: "/art/full-3.webp", altKey: "fullBody", category: "sketch", width: 1153, height: 2400 },
   { src: "/art/half-poster-2.webp", altKey: "poster", category: "poster", width: 1728, height: 2304 },
   { src: "/art/head-1.webp", altKey: "portrait", category: "sketch", width: 1080, height: 1350 },
-  { src: "/art/half-3.webp", altKey: "character", category: "sketch", width: 1355, height: 2400 },
+  { src: "/art/half-3.webp", altKey: "halfBody", category: "sketch", width: 1355, height: 2400 },
   { src: "/art/half-poster-1.webp", altKey: "poster", category: "poster", width: 1728, height: 2304 },
-  { src: "/art/half-2.webp", altKey: "character", category: "sketch", width: 1600, height: 2400 },
-  { src: "/art/half-4.webp", altKey: "character", category: "sketch", width: 1802, height: 2400 },
+  { src: "/art/half-2.webp", altKey: "halfBody", category: "sketch", width: 1600, height: 2400 },
+  { src: "/art/half-4.webp", altKey: "halfBody", category: "sketch", width: 1802, height: 2400 },
+  { src: "/art/half-5.webp", altKey: "halfBody", category: "sketch", width: 1920, height: 2400 },
+  { src: "/art/half-6.webp", altKey: "halfBody", category: "sketch", width: 1414, height: 2000 },
   { src: "/art/head-2.webp", altKey: "portrait", category: "sketch", width: 1080, height: 1350 },
   { src: "/art/head-3.webp", altKey: "portrait", category: "sketch", width: 2400, height: 2400 },
   { src: "/art/head-4.webp", altKey: "portrait", category: "sketch", width: 1802, height: 2400 },
-  { src: "/art/full-2.webp", altKey: "character", category: "sketch", width: 975, height: 2400 },
+  { src: "/art/full-2.webp", altKey: "fullBody", category: "sketch", width: 975, height: 2400 },
 ];
 
 export const calculateEstimate = (baseId: CommissionId, extras: CommissionId[]) => {

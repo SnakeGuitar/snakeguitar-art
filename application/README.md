@@ -23,7 +23,7 @@ La separación mantiene las reglas de precios fuera de React sin introducir repo
 
 ## UI e idiomas
 
-La interfaz utiliza un sistema visual neumórfico claro/oscuro inspirado en `snakeguitar-space`. Incluye inglés de EE. UU., español de México, portugués brasileño, japonés y coreano. El tema y el idioma se conservan en `localStorage`.
+La interfaz utiliza un sistema editorial claro/oscuro en marfil, tinta y topo, con una retícula de galería adaptable. Incluye inglés de EE. UU., español de México, portugués brasileño, japonés y coreano. El tema y el idioma se conservan en `localStorage`.
 
 ## Música
 
