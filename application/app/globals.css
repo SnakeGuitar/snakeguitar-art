@@ -197,6 +197,7 @@ h1 em { color: var(--accent); font-weight: 600; }
 .fake-check { display: grid; place-items: center; width: 18px; height: 18px; border: 0; border-radius: 5px; background: var(--card); box-shadow: var(--inset); color: transparent; font-size: 10px; }
 .check-row input:checked + .fake-check { background: var(--card); color: var(--accent); box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light); }
 .check-row b { font-family: var(--mono); font-size: 10px; }
+.check-row.included { opacity: .78; cursor: default; }
 .estimate-total { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--ink); padding: 23px 0; }
 .estimate-total > span { font-size: 11px; font-weight: 700; }
 .estimate-total small { display: block; margin-top: 4px; color: var(--muted); font: 8px var(--mono); }

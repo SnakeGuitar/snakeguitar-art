@@ -12,7 +12,7 @@ export const commissionTypes: readonly CommissionType[] = [
   { id: "halfBody", price: 25 },
   { id: "fullBody", price: 40 },
   { id: "poster", price: 15, modifier: true },
-  { id: "experimental", price: 5, modifier: true },
+  { id: "experimental", price: 5 },
   { id: "character", price: 130, startingAt: true },
 ];
 
@@ -49,6 +49,6 @@ export const artworks: Artwork[] = [
 ];
 
 export const calculateEstimate = (baseId: CommissionId, extras: CommissionId[]) => {
-  const selected = commissionTypes.filter((item) => item.id === baseId || extras.includes(item.id));
+  const selected = commissionTypes.filter((item) => item.id === baseId || (extras.includes(item.id) && !(baseId === "character" && item.id === "poster")));
   return selected.reduce((total, item) => total + item.price, 0);
 };

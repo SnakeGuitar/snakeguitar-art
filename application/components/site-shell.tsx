@@ -9,8 +9,8 @@ type Filter = "all" | "sketch" | "poster" | "color";
 type Theme = "light" | "dark";
 type Track = { title: string; src: string };
 
-const primaryTypes: CommissionId[] = ["headshot", "halfBody", "fullBody", "character"];
-const addOnTypes: CommissionId[] = ["poster", "experimental"];
+const primaryTypes: CommissionId[] = ["headshot", "halfBody", "fullBody", "experimental", "character"];
+const addOnTypes: CommissionId[] = ["poster"];
 const categoryOrder: Exclude<Filter, "all">[] = ["sketch", "poster", "color"];
 
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
@@ -202,7 +202,10 @@ export function SiteShell() {
             <aside className="estimator">
               <div className="estimator-head"><span aria-hidden="true">✦</span><div><h3>{t.estimator}</h3><p>{t.estimatorBody}</p></div></div>
               <label>{t.base}<select value={base} onChange={(e) => setBase(e.target.value as CommissionId)}>{primaryTypes.map((id) => <option value={id} key={id}>{t.types[id]}</option>)}</select></label>
-              <fieldset><legend>{t.extras}</legend>{addOnTypes.map((id) => <label className="check-row" key={id}><input type="checkbox" checked={extras.includes(id)} onChange={() => toggleExtra(id)} /><span className="fake-check">✓</span><span>{t.types[id]}</span><b>+${commissionTypes.find((item) => item.id === id)?.price}</b></label>)}</fieldset>
+              <fieldset><legend>{t.extras}</legend>{addOnTypes.map((id) => {
+                const isIncluded = base === "character" && id === "poster";
+                return <label className={`check-row${isIncluded ? " included" : ""}`} key={id}><input type="checkbox" disabled={isIncluded} checked={isIncluded || extras.includes(id)} onChange={() => toggleExtra(id)} /><span className="fake-check">✓</span><span>{t.types[id]}</span><b>{isIncluded ? t.includedAddon : `+$${commissionTypes.find((item) => item.id === id)?.price}`}</b></label>;
+              })}</fieldset>
               <div className="estimate-total"><span>{t.estimated}<small>{t.usd}</small></span><strong>${estimate}</strong></div>
               <a className="button primary full" href="#contact">{t.buildBrief}<Arrow /></a>
             </aside>
