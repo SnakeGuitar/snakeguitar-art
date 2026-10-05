@@ -13,7 +13,7 @@ export const commissionTypes: readonly CommissionType[] = [
   { id: "fullBody", price: 40 },
   { id: "poster", price: 15, modifier: true },
   { id: "experimental", price: 5 },
-  { id: "character", price: 130, startingAt: true },
+  { id: "character", price: 100, startingAt: true },
 ];
 
 export const socialLinks = [
