@@ -279,20 +279,6 @@ export function SiteShell() {
           <div className="steps">{t.steps.map((step) => <article key={step.n}><span>{step.n}</span><div className="step-line" /><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
         </section>
 
-        <section id="nsfw" className="nsfw-section section-pad">
-          <div className="nsfw-mark" aria-hidden="true"><span>18+</span></div>
-          <div className="nsfw-copy">
-            <p className="eyebrow"><span />{t.nsfwEyebrow}</p>
-            <h2>{t.nsfwTitle}</h2>
-            <p>{t.nsfwBody}</p>
-            <strong>{t.nsfwPrice}</strong>
-          </div>
-          <div className="nsfw-rules">
-            <ul>{t.nsfwRules.map((rule, index) => <li key={rule}><span>0{index + 1}</span>{rule}</li>)}</ul>
-            <a className="button primary full" href="#contact">{t.nsfwCta}<Arrow /></a>
-          </div>
-        </section>
-
         <section id="faq" className="faq-section section-pad">
           <div className="faq-title"><p className="eyebrow"><span />{t.faqEyebrow}</p><h2>{t.faqTitle}</h2><span className="faq-sketch" aria-hidden="true">?</span></div>
           <div className="accordions">{t.faqs.map((faq, index) => <details key={faq.q} open={index === 0}><summary><span>0{index + 1}</span>{faq.q}<i>+</i></summary><p>{faq.a}</p></details>)}</div>

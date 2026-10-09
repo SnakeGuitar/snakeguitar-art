@@ -159,16 +159,6 @@ h1 em { color: var(--taupe); font-weight: 600; }
 .step-line { display: none; }
 .steps h3 { margin: 35px 0 13px; font-size: 15px; }
 .steps p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
-.nsfw-section { display: grid; grid-template-columns: .35fr 1fr .8fr; gap: clamp(36px,7vw,105px); align-items: center; padding-top: clamp(80px,9vw,125px); padding-bottom: clamp(80px,9vw,125px); background: var(--paper-2); }
-.nsfw-mark { display: grid; place-items: center; width: min(100%,190px); aspect-ratio: 1; border: 1px solid var(--line-strong); border-radius: 50%; }
-.nsfw-mark span { color: var(--taupe); font: italic 600 clamp(35px,4vw,59px) var(--display); }
-.nsfw-copy h2 { margin: 0; font: 600 clamp(41px,4.7vw,70px)/.98 var(--display); letter-spacing: -.05em; }
-.nsfw-copy > p:not(.eyebrow) { margin: 22px 0 18px; color: var(--muted); font-size: 12px; line-height: 1.75; }
-.nsfw-copy strong { color: var(--taupe); font: 500 9px var(--mono); text-transform: uppercase; }
-.nsfw-rules { padding: 8px 0; border-top: 1px solid var(--ink); }
-.nsfw-rules ul { margin: 0 0 23px; padding: 0; list-style: none; }
-.nsfw-rules li { display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 13px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.5; }
-.nsfw-rules li span { color: var(--taupe); font: 8px var(--mono); }
 .faq-section { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(45px,9vw,150px); padding-top: var(--section-y); padding-bottom: var(--section-y); }
 .faq-title { position: relative; }
 .faq-sketch { display: grid; place-items: center; width: 70px; height: 70px; margin: 45px 0 0 18%; border: 1px solid var(--taupe); border-radius: 50%; color: var(--taupe); font: italic 48px var(--display); transform: rotate(-7deg); }
@@ -256,8 +246,6 @@ button:active,.button:active,.header-cta:active,.mark:active,.desktop-nav a:acti
   .hero { grid-template-columns: minmax(0,1fr) minmax(330px,.72fr); gap: 42px; }
   .gallery { column-count: 2; }
   .price-layout { grid-template-columns: 1fr minmax(280px,.58fr); gap: 42px; }
-  .nsfw-section { grid-template-columns: .35fr 1fr; }
-  .nsfw-rules { grid-column: 1/-1; }
 }
 @media (max-width: 760px) {
   :root { --section-x: 18px; --section-y: 86px; }
@@ -277,9 +265,6 @@ button:active,.button:active,.header-cta:active,.mark:active,.desktop-nav a:acti
   .price-layout { grid-template-columns: 1fr; }
   .estimator { position: static; }
   .steps { grid-template-columns: 1fr 1fr; gap: 42px 20px; margin-top: 52px; }
-  .nsfw-section { grid-template-columns: 1fr; }
-  .nsfw-mark { max-width: 135px; }
-  .nsfw-rules { grid-column: auto; }
   .faq-section,.contact-section,.social-section { grid-template-columns: 1fr; }
   .faq-sketch { display: none; }
   .contact-section { gap: 45px; }
