@@ -8,12 +8,12 @@ type CommissionType = {
 };
 
 export const commissionTypes: readonly CommissionType[] = [
-  { id: "headshot", price: 20 },
-  { id: "halfBody", price: 30 },
-  { id: "fullBody", price: 40 },
+  { id: "headshot", price: 30 },
+  { id: "halfBody", price: 40 },
+  { id: "fullBody", price: 50 },
   { id: "poster", price: 15, modifier: true },
-  { id: "experimental", price: 5 },
-  { id: "character", price: 100, startingAt: true },
+  { id: "experimental", price: 30 },
+  { id: "character", price: 130, startingAt: true },
 ];
 
 export const socialLinks = [
