@@ -20,8 +20,7 @@ function Arrow({ diagonal = false }: { diagonal?: boolean }) {
 function Mark() {
   return (
     <a className="mark" href="#top" aria-label="SnakeGuitar home">
-      <span className="mark-cat" aria-hidden="true">/\_/\</span>
-      <span>Snake<br />Guitar</span>
+      <Image src="/brand/wordmark.png" width={604} height={274} alt="Snake Guitar" unoptimized />
     </a>
   );
 }
@@ -193,24 +192,19 @@ export function SiteShell() {
       </header>
 
       <main id="content">
-        <section className="hero section-pad">
-          <div className="hero-copy">
-            <p className="eyebrow"><span />{t.eyebrow}</p>
-            <h1>{t.heroTitleA}<br /><em>{t.heroTitleB}</em></h1>
-            <p className="hero-body">{t.heroBody}</p>
-            <div className="hero-actions">
-              <a className="button primary" href="#contact">{t.start}<Arrow diagonal /></a>
-              <a className="button secondary" href="#work">{t.viewWork}<Arrow /></a>
-            </div>
-            <div className="availability"><span className="pulse" /><strong>{t.available}</strong><span className="slash">/</span><span>{t.slots}</span></div>
+        <section className="cover section-pad" aria-labelledby="cover-title">
+          <div className="cover-folio"><span>{t.eyebrow}</span><span>México</span></div>
+          <div className="cover-plate">
+            <Image src="/brand/cover.webp" alt="Snake Guitar" width={1500} height={500} priority unoptimized />
           </div>
-          <figure className="hero-art">
-            <div className="image-frame">
-              <Image src="/art/full-poster-1.webp" alt={t.artAlt.poster} fill priority unoptimized sizes="(max-width: 800px) 85vw, 42vw" />
+          <div className="cover-intro">
+            <h1 id="cover-title">{t.heroTitleA} <em>{t.heroTitleB}</em></h1>
+            <div className="cover-index">
+              <a href="#work">{t.viewWork}<span aria-hidden="true">↓</span></a>
+              <a href="#pricing">{t.navPricing}<Arrow /></a>
+              <a href="#contact">{t.start}<Arrow diagonal /></a>
             </div>
-            <figcaption className="hero-caption"><span>01 / {String(artworks.length).padStart(2, "0")}</span><strong>{t.filters.poster}</strong><span>{t.artAlt.poster}</span></figcaption>
-          </figure>
-          <a className="scroll-cue" href="#work"><span>↓</span>{t.scroll}</a>
+          </div>
         </section>
 
         <section id="work" className="work-section section-pad">
@@ -219,7 +213,7 @@ export function SiteShell() {
             <p>{t.workBody}</p>
           </div>
           <div className="filters" role="group" aria-label={t.navWork}>
-            {(["all", "sketch", "poster", "color"] as Filter[]).map((item) => <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{t.filters[item]} <span>{item === "all" ? artworks.length : artworks.filter((art) => art.category === item).length}</span></button>)}
+            {(["all", "sketch", "poster", "color"] as Filter[]).map((item) => <button key={item} className={filter === item ? "active" : ""} aria-pressed={filter === item} onClick={() => setFilter(item)}>{t.filters[item]} <span>{item === "all" ? artworks.length : artworks.filter((art) => art.category === item).length}</span></button>)}
           </div>
           <div className="art-groups">
             {groupedArt.map(({ category, items }) => <section className="art-group" key={category} aria-labelledby={`group-${category}`}>
@@ -251,7 +245,7 @@ export function SiteShell() {
         <section id="pricing" className="pricing-section section-pad">
           <div className="section-intro">
             <div><p className="eyebrow"><span />{t.pricingEyebrow}</p><h2>{t.pricingTitle}</h2></div>
-            <p>{t.pricingBody}</p>
+            <div className="pricing-note"><p>{t.pricingBody}</p><div className="availability"><span className="pulse" /><strong>{t.available}</strong><span className="slash">/</span><span>{t.slots}</span></div></div>
           </div>
           <div className="price-layout">
             <div className="price-list">
@@ -280,12 +274,12 @@ export function SiteShell() {
         </section>
 
         <section id="faq" className="faq-section section-pad">
-          <div className="faq-title"><p className="eyebrow"><span />{t.faqEyebrow}</p><h2>{t.faqTitle}</h2><span className="faq-sketch" aria-hidden="true">?</span></div>
+          <div className="faq-title"><p className="eyebrow"><span />{t.faqEyebrow}</p><h2>{t.faqTitle}</h2></div>
           <div className="accordions">{t.faqs.map((faq, index) => <details key={faq.q} open={index === 0}><summary><span>0{index + 1}</span>{faq.q}<i>+</i></summary><p>{faq.a}</p></details>)}</div>
         </section>
 
         <section id="contact" className="contact-section section-pad">
-          <div className="contact-copy"><p className="eyebrow"><span />{t.contactEyebrow}</p><h2>{t.contactTitle}</h2><p>{t.contactBody}</p><div className="contact-doodle" aria-hidden="true">=＾● ⋏ ●＾=</div></div>
+          <div className="contact-copy"><p className="eyebrow"><span />{t.contactEyebrow}</p><h2>{t.contactTitle}</h2><p>{t.contactBody}</p></div>
           <form className="brief-form" onSubmit={(event) => { event.preventDefault(); copyBrief(); }}>
             <label>{t.name}<input value={name} onChange={(e) => setName(e.target.value)} placeholder="@handle" /></label>
             <label>{t.type}<select value={base} onChange={(e) => setBase(e.target.value as CommissionId)}>{primaryTypes.map((id) => <option value={id} key={id}>{t.types[id]}</option>)}</select></label>

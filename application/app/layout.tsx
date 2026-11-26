@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SnakeGuitar — Illustration & Commissions",
+  title: "Snake Guitar — Illustration, Fiction & Commissions",
   description: "Furry art, character design, fineliner illustrations with graphite details and custom commissions by SnakeGuitar.",
 };
 
