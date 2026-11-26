@@ -17,7 +17,7 @@ export const commissionTypes: readonly CommissionType[] = [
 ];
 
 export const socialLinks = [
-  { id: "twitter", label: "Twitter / X", handle: "@SnakeGuitar", href: "https://x.com/SnakeGuitarr", icon: "𝕏" },
+  { id: "twitter", label: "Twitter / X", handle: "@SnakeGuitarr", href: "https://x.com/SnakeGuitarr", icon: "𝕏" },
   { id: "vgen", label: "VGen", handle: "vgen.co/SnakeGuitar", href: "https://vgen.co/SnakeGuitar", icon: "V" },
   { id: "discord", label: "Discord", handle: "snakeguitar", href: null, icon: "D" },
 ] as const;
